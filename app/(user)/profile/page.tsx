@@ -33,7 +33,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Loader2, LogOut, LayoutDashboard, Settings } from "lucide-react"; // Added Settings icon
-import UserProfile from "@/components/mini-component/UserProfile";
 
 // --- Helper function to generate initials ---
 const getInitials = (
