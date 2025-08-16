@@ -99,6 +99,7 @@ function AdminChatbot() {
 
     setIsUploading(true);
     setFileError(null);
+    console.log("gufiseyhfuies", file);
     try {
       const response = await fetch("/api/upload", {
         // Ensure this API exists
@@ -208,7 +209,10 @@ function AdminChatbot() {
                       key={file.filename}
                       className="flex justify-between items-center text-sm p-1 hover:bg-purple-50 dark:hover:bg-gray-700 rounded"
                     >
-                      <span className="truncate mr-2" title={file.filename}>
+                      <span
+                        className="mr-2 break-words whitespace-normal max-w-[300px]"
+                        title={file.filename}
+                      >
                         {file.filename}
                       </span>
                       <Button
