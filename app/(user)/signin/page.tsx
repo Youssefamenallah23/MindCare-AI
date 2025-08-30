@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -13,6 +13,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useSignIn } from "@clerk/nextjs";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { c } from "framer-motion/dist/types.d-Cjd591yU";
+import { set } from "date-fns";
 
 type FormValues = {
   emailAddress: string;
@@ -25,16 +27,18 @@ const SignInForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const { isLoaded, signIn, setActive } = useSignIn();
+
   const router = useRouter();
-  const { isLoaded, signIn } = useSignIn();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (!isLoaded) {
       setError("Clerk is not loaded. Please try again.");
       return;
     }
-
+    setLoading(true);
     try {
       const result = await signIn.create({
         identifier: data.emailAddress,
@@ -42,13 +46,15 @@ const SignInForm = () => {
       });
 
       if (result.status === "complete") {
-        window.location.reload();
-        setTimeout(() => {
-          window.location.replace("/dashboard");
-        }, 100);
+        // ✅ set the active session
+        await setActive({ session: result.createdSessionId });
+
+        // ✅ redirect using Next.js router
+        router.push("/dashboard"); // or /mindy
       } else {
         console.log("Sign-in requires additional steps:", result);
       }
+      setLoading(false);
     } catch (err: any) {
       setError(
         err.errors?.[0]?.message ||
@@ -113,10 +119,11 @@ const SignInForm = () => {
               )}
             </div>
             <Button
+              disabled={loading}
               type="submit"
               className="w-full rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:scale-105 transform transition-all duration-300 shadow-lg text-white"
             >
-              🚀 Sign In
+              {loading ? "loading...." : "🚀 Sign In"}
             </Button>
           </form>
           <div id="clerk-captcha" className="pt-4"></div>

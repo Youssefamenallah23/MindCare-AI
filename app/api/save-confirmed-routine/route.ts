@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 import { createClient } from "@sanity/client";
-
+import { nanoid } from "nanoid";
 const sanityClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "missing_project_id",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "missing_dataset",
@@ -11,54 +11,49 @@ const sanityClient = createClient({
   apiVersion: "2024-03-11",
 }); // Use your shared client
 // --- NEW: Enhanced Task Parser ---
-interface ParsedTask {
-  dayIndex: number;
-  description: string;
-}
 
-function parseMultiDayTasks(
-  content: string
-): Array<{
+function parseMultiDayTasks(content: string): Array<{
   _type: string;
+  _key: string;
   dayIndex: number;
   description: string;
   completed: boolean;
 }> {
   const tasks: Array<{
     _type: string;
+    _key: string;
     dayIndex: number;
     description: string;
     completed: boolean;
   }> = [];
+
   const lines = content
     .split("\n")
     .map((line) => line.trim())
     .filter((line) => line.length > 0);
-  let currentDayIndex = 0;
 
-  const dayHeaderRegex = /^\*\*Day\s*(\d+):\*\*/i; // Matches "Day X:" (case-insensitive)
+  let currentDayIndex = 0;
+  const dayHeaderRegex = /^\*\*Day\s*(\d+):\*\*/i;
 
   for (const line of lines) {
     const dayMatch = line.match(dayHeaderRegex);
     if (dayMatch && dayMatch[1]) {
-      // Found a day header, update current day index
       currentDayIndex = parseInt(dayMatch[1], 10);
     } else if (
       currentDayIndex > 0 &&
       (line.startsWith("*") || line.startsWith("-"))
     ) {
-      // Found a task line after a day header
       const description = line.replace(/^[\*\-\•]\s*/, "").trim();
       if (description) {
         tasks.push({
           _type: "taskItem",
-          dayIndex: currentDayIndex, // Assign the current day index
-          description: description,
-          completed: false, // Default to not completed
+          _key: nanoid(), // ✅ unique key for each task
+          dayIndex: currentDayIndex,
+          description,
+          completed: false,
         });
       }
     }
-    // Ignore lines that aren't day headers or task items following a header
   }
 
   return tasks;

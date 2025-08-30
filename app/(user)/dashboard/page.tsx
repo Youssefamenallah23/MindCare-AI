@@ -25,6 +25,7 @@ interface Quote {
 
 const MoodCalendarPage: React.FC = () => {
   const { session, isLoaded } = useSession();
+  console.log("gsegsegvcv", session);
   const clerkId = session?.user?.id;
 
   const [sanityUserId, setSanityUserId] = useState<string | null>(null);

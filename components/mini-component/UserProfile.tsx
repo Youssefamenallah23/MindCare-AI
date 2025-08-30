@@ -85,6 +85,7 @@ export default function UserProfile() {
         _id, firstName, lastName, username, role, profileImage
       }`;
       const params = { clerkId };
+      console.log(params);
       const data = await sanityClient.fetch<SanityUser | null>(query, params);
 
       if (data) {

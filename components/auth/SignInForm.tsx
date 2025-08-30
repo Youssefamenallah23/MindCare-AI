@@ -29,13 +29,19 @@ const SignInForm = () => {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    // Clear any previous error message
+    setError(null);
     const result = await signIn({ email: data.email, password: data.password });
-    if (result.error) {
-      setError(result.error);
-      return;
-    }
 
-    router.push("/dashboard");
+    // Check if the sign-in was successful
+    if (!result.error) {
+      // If no error, redirect to the dashboard
+      router.push("/dashboard");
+    } else {
+      // If there's an error, set the error state
+      setError(result.error);
+      // DO NOT redirect if there's an error
+    }
   };
 
   return (

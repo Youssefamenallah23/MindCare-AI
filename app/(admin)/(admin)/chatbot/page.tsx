@@ -40,7 +40,7 @@ import Navbar from "@/components/navbar";
 function AdminChatbot() {
   // --- Chat Hook ---
   const { status, messages, input, handleInputChange, handleSubmit } = useChat({
-    api: "/api/chat", // Assuming admin chat uses the same API for now
+    api: "/api/admin-chat", // Assuming admin chat uses the same API for now
   });
 
   // --- File Handling State ---
