@@ -151,8 +151,7 @@ export async function POST(request: Request) {
         userId,
       }
     ); // Add type hint for fetch result
-    console.log(userId);
-    console.log(existingUser);
+
     // Check if the fetch was successful and if the user array is not empty
     if (!existingUser) {
       return NextResponse.json(
@@ -209,7 +208,6 @@ Notable Patterns:
     }
 
     const extractedData = extractAnalysisData(analysis);
-    console.log(extractedData);
 
     // Prepare the document for Sanity
     const sanityDoc = {
@@ -235,7 +233,6 @@ Notable Patterns:
     let sanityResult;
     try {
       sanityResult = await sanityClient.create(sanityDoc);
-      console.log(sanityResult);
     } catch (sanityError) {
       console.error("Error creating Sanity document:", sanityError);
       return NextResponse.json(

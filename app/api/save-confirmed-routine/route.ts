@@ -131,9 +131,6 @@ export async function POST(request: NextRequest) {
 
     // 6. Create Document (keep as before)
     const createdRoutine = await sanityClient.create(newRoutineDocument);
-    console.log(
-      `Saved multi-day routine ${createdRoutine._id} for user ${sanityUserId} duration ${duration}`
-    );
 
     // 7. Return Success (keep as before)
     return NextResponse.json(

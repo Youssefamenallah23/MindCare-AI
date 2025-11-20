@@ -35,7 +35,6 @@ export default function AdminPage() {
       return;
     }
 
-    console.log("Checking admin status...");
     setIsLoading(true);
     setError(null);
     try {
@@ -53,7 +52,7 @@ export default function AdminPage() {
       const data = await response.json();
       const isAdmin = data?.role === "admin";
       setIsAdminUser(isAdmin);
-      console.log(`Admin check result: ${isAdmin}`);
+
       if (!isAdmin) setError("Access denied. Admin privileges required.");
     } catch (err: any) {
       console.error("Failed to check admin status:", err);
@@ -95,9 +94,6 @@ export default function AdminPage() {
       // Returns promise to allow child component to await completion & handle UI
       return new Promise<void>(async (resolve, reject) => {
         try {
-          console.log(
-            `Parent handleSetRole: Setting ${targetUserId} admin=${makeAdmin}`
-          );
           const response = await fetch("/api/admin/manage-role", {
             // Ensure this API exists
             method: "POST",

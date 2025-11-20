@@ -77,7 +77,6 @@ export default function UserProfile() {
   // Fetch user data directly from Sanity
   // useCallback with empty dependencies ensures stable function reference
   const fetchUserData = useCallback(async (clerkId: string) => {
-    console.log(`UserProfile: Fetching data for clerkId: ${clerkId}`);
     setIsLoading(true); // Set loading when fetch starts
     setError(null);
     try {
@@ -85,12 +84,11 @@ export default function UserProfile() {
         _id, firstName, lastName, username, role, profileImage
       }`;
       const params = { clerkId };
-      console.log(params);
+
       const data = await sanityClient.fetch<SanityUser | null>(query, params);
 
       if (data) {
         setUserData(data);
-        console.log("UserProfile: User data fetched successfully.");
       } else {
         console.warn(`No Sanity user profile found for Clerk ID: ${clerkId}.`);
         setError("Profile details not found.");
@@ -107,25 +105,17 @@ export default function UserProfile() {
 
   // Effect to trigger fetch based on session status
   useEffect(() => {
-    console.log("UserProfile Effect: ", {
-      isLoaded,
-      sessionId: session?.id,
-      currentUserId: userData?._id,
-    });
-
     if (isLoaded) {
       if (session?.user?.id) {
         // Session loaded and user exists
         // Fetch only if userData is currently null (initial load or after logout)
         if (userData === null && !error) {
           // Added !error check
-          console.log(
-            "Triggering fetchUserData - session loaded, no user data yet."
-          );
+
           fetchUserData(session.user.id);
         } else if (!isLoading && !userData && !error) {
           // Loaded, session exists, fetch finished but found no data (error state handles failure)
-          console.log("Fetch complete, no user data found in Sanity.");
+
           setIsLoading(false); // Ensure loading is false
         } else if (!isLoading && userData) {
           // Data exists, ensure loading is false
@@ -133,7 +123,7 @@ export default function UserProfile() {
         }
       } else {
         // Clerk loaded, but no user session (logged out)
-        console.log("Session not active, clearing user data.");
+
         setIsLoading(false);
         setUserData(null); // Clear user data
         setError(null); // Clear error

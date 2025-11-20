@@ -112,10 +112,6 @@ export async function POST(request: NextRequest) {
       .set(fieldsToUpdate)
       .commit({ autoGenerateArrayKeys: false });
 
-    console.log(
-      `Admin ${callerClerkId} updated profile for user ${targetUserId}`
-    );
-
     // 5. Return Success Response
     // Optionally return the updated user data
     return NextResponse.json({ message: "User profile updated successfully" });

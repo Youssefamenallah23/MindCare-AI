@@ -18,7 +18,7 @@ export async function addUserToSanity(userData: {
     );
 
     if (existingUser) {
-      console.log("User already exists in Sanity");
+       "User already exists in Sanity");
       return;
     }
 
@@ -36,7 +36,7 @@ export async function addUserToSanity(userData: {
     };
 
     await client.create(userDoc);
-    console.log("User added to Sanity:", userDoc);
+     "User added to Sanity:", userDoc);
   } catch (error) {
     console.error("Error adding user to Sanity:", error);
     throw error;

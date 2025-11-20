@@ -52,9 +52,7 @@ export async function POST(request: NextRequest) {
     // End Optional Security Check
 
     // 4. Perform the Sanity Patch operation
-    console.log(
-      `Patching routine ${routineId}, task ${taskKey} to completed: ${completed}`
-    );
+
     await sanityClient
       .patch(routineId) // Document ID to patch
       .set({ [`tasks[_key=="${taskKey}"].completed`]: completed }) // Set the completed field of the specific task item

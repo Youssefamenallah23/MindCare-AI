@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
   try {
     const userData = await request.json();
-    console.log(userData);
+
     // Validate required fields
     if (!userData.clerkId || !userData.email) {
       return NextResponse.json(

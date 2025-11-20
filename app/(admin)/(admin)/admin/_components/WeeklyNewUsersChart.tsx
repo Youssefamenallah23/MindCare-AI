@@ -82,7 +82,7 @@ export function WeeklyNewUsersChart() {
       const today = new Date();
       const startDate = subDays(today, range === "week" ? 7 : 30);
       const startDateISO = format(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-      console.log("Fetching user data from:", startDateISO);
+
       const query = `*[_type == "users" && createdAt >= $startDate]{ createdAt }`;
       const params = { startDate: startDateISO };
       const usersData = await sanityClient.fetch<NewUserRecord[] | null>(

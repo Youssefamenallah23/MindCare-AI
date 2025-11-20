@@ -90,7 +90,6 @@ function ChatbotUser() {
         // Ensure session exists
         const doneToday = await checkIfAnalysisDoneToday();
         setAnalysisDoneToday(doneToday);
-        console.log(`Initial check: Analysis done today? ${doneToday}`);
       }
     };
     checkOnLoad();
@@ -99,13 +98,9 @@ function ChatbotUser() {
   const analyzeChat = useCallback(async () => {
     // Final check before API call
     if (!session?.user?.id || analysisDoneToday || !localStorageKey) {
-      console.log(
-        `analyzeChat skipped: session=${!!session?.user?.id}, doneToday=${analysisDoneToday}, keyExists=${!!localStorageKey}`
-      );
       return;
     }
 
-    console.log("Timer fired: Calling /api/analyzeUserChat...");
     try {
       // IMPORTANT: Ensure this API call gets the messages it needs.
       // Passing the whole 'messages' array might be large. Consider if API can fetch them.
@@ -115,7 +110,7 @@ function ChatbotUser() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: messages, userId: session.user.id }), // Sending current messages state
       });
-      console.log("Chat analyzed (timer) and saved flag set (localStorage).");
+
       setAnalysisDoneToday(true); // Prevent timer firing again today
       localStorage.setItem(localStorageKey, new Date().toISOString());
       setStartTime(null); // Reset timer start time
@@ -131,10 +126,9 @@ function ChatbotUser() {
     // Conditions to NOT start the timer
     if (!isLoaded || !session?.user?.id || analysisDoneToday) {
       if (analysisDoneToday)
-        console.log("Analysis done today. Timer not starting/stopped.");
-      // Clear interval if it exists and conditions aren't met
-      // (Logic moved to cleanup function for robustness)
-      return;
+        // Clear interval if it exists and conditions aren't met
+        // (Logic moved to cleanup function for robustness)
+        return;
     }
 
     // Start timer only once after conditions are met
@@ -142,9 +136,6 @@ function ChatbotUser() {
     if (currentStartTime === null) {
       currentStartTime = Date.now();
       setStartTime(currentStartTime); // Set the start time state
-      console.log(
-        `Timer started. Will fire analyzeChat in ${fiveMinutes / 1000}s if conditions met.`
-      );
     }
 
     const interval = setInterval(() => {
@@ -155,19 +146,17 @@ function ChatbotUser() {
         Date.now() - startTime >= fiveMinutes &&
         messages.length > 0
       ) {
-        console.log("Timer duration reached, calling analyzeChat.");
         analyzeChat(); // Call the analysis function
         clearInterval(interval); // Stop interval once condition met
       } else if (analysisDoneToday) {
         // If analysis becomes done while interval is running, clear it
-        console.log("Analysis done, clearing interval from inside.");
+
         clearInterval(interval);
       }
     }, 5000); // Check every 5 seconds
 
     // Cleanup interval on unmount or when dependencies change
     return () => {
-      console.log("Clearing timer interval (cleanup).");
       clearInterval(interval);
     };
     // Include all relevant dependencies that control the timer's lifecycle
@@ -184,9 +173,7 @@ function ChatbotUser() {
   const saveRoutineToDb = useCallback(
     async (routineContent: string, duration: number) => {
       if (!session?.user?.id || isSavingRoutine.current) return;
-      console.log(
-        `Attempting to save routine with duration: ${duration} days...`
-      );
+
       isSavingRoutine.current = true;
       try {
         const response = await fetch("/api/save-confirmed-routine", {
@@ -210,7 +197,6 @@ function ChatbotUser() {
             );
           }
         } else {
-          console.log("Confirmed routine save API successful:", result);
           if (result.routineExists === true) {
             // Handle backend check message
             alert("Routine for today already exists.");
@@ -255,7 +241,6 @@ function ChatbotUser() {
         if (startIndex < endIndex) {
           const extracted = content.substring(startIndex, endIndex).trim();
           setLatestSuggestedRoutineContent(extracted);
-          console.log("Stored routine suggestion content.");
         }
       }
 
@@ -271,9 +256,6 @@ function ChatbotUser() {
         if (startIndex < endIndex) {
           const durationStr = content.substring(startIndex, endIndex).trim();
           const durationNum = parseInt(durationStr, 10);
-          console.log(
-            `Duration tag detected. Extracted duration: ${durationNum}`
-          );
 
           if (
             !isNaN(durationNum) &&
@@ -292,7 +274,6 @@ function ChatbotUser() {
               "Couldn't understand the duration, please try confirming again."
             );
           } else if (isSavingRoutine.current) {
-            console.log("Save routine already in progress.");
           }
         } else {
           console.warn(

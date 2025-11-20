@@ -82,7 +82,6 @@ export default function ProfilePage() {
 
   // --- Data Fetching ---
   const fetchUserProfile = useCallback(async () => {
-    console.log("Profile Page: Fetching data...");
     setIsLoading(true);
     setError(null);
     setSuccessMessage(null);

@@ -17,7 +17,7 @@ const {
   GEMINI_API_KEY,
 } = process.env;
 
-console.log(GEMINI_API_KEY);
+
 const genAI = new GoogleGenerativeAI(`${GEMINI_API_KEY}`);
 const embeddingModel = genAI.getGenerativeModel({
   model: "text-embedding-004",
@@ -45,7 +45,7 @@ const createCollection = async (
       metric: similarityMetric,
     },
   });
-  console.log(res);
+   
 };
 
 const loadSampleData = async () => {
@@ -61,23 +61,23 @@ const loadSampleData = async () => {
         });
         const vectorEmbedding = embeddingResponse.embedding.values; // Extract embedding vector
 
-        console.log(
-          `Generated embedding for chunk: ${chunk.substring(0, 50)}...`
-        );
+         
+        
+       
 
         const res = await collection.insertOne({
           pageContent: chunk,
           $vector: vectorEmbedding,
           metadata: { source: url },
         });
-        console.log(`Chunk stored in DB: ${chunk.substring(0, 50)}...`);
+        
       } catch (error) {
         console.error("Error generating or storing embedding:", error);
         console.error(error);
       }
     }
   }
-  console.log("Sample data loaded successfully!");
+   "Sample data loaded successfully!");
 };
 
 const scrapePage = async (url: string) => {

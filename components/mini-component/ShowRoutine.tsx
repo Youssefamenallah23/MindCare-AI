@@ -58,7 +58,6 @@ function ShowRoutine() {
 
   // --- Fetch Logic ---
   const fetchRoutines = useCallback(async (clerkId: string) => {
-    console.log("fetchRoutines called");
     setIsLoading(true);
     setError(null);
     setFetchedRoutines(null); // Clear raw fetched data
@@ -83,7 +82,7 @@ function ShowRoutine() {
 
     try {
       const data = await sanityClient.fetch<Routine[] | null>(query, params);
-      console.log("Fetched data:", data);
+
       setFetchedRoutines(Array.isArray(data) ? data : []); // Store raw data
     } catch (err: any) {
       console.error("Error fetching routines:", err);
@@ -91,12 +90,10 @@ function ShowRoutine() {
       setFetchedRoutines([]);
     } finally {
       setIsLoading(false);
-      console.log("fetchRoutines finished");
     }
   }, []);
 
   useEffect(() => {
-    console.log("Session/Load Effect:", { isLoaded, hasSession: !!session });
     if (isLoaded && session?.user?.id) {
       fetchRoutines(session.user.id);
     } else if (isLoaded && !session) {
@@ -112,7 +109,7 @@ function ShowRoutine() {
     if (!fetchedRoutines) return [];
 
     const todayStart = startOfDay(new Date());
-    console.log("Filtering fetched routines:", fetchedRoutines); // Debug log
+
     return fetchedRoutines.filter((routine) => {
       try {
         const startDate = parseISO(routine.routineDate);
@@ -122,9 +119,7 @@ function ShowRoutine() {
           startOfDay(startDate)
         );
         const isActive = !isNaN(daysPassed) && daysPassed < duration;
-        console.log(
-          `Routine ${routine._id}: startDate=${startDate}, duration=${duration}, daysPassed=${daysPassed}, isActive=${isActive}`
-        ); // Debug log
+
         return isActive;
       } catch (e) {
         console.error(
@@ -210,7 +205,6 @@ function ShowRoutine() {
               `Failed to update task status (${response.status})`
           );
         }
-        console.log(`Task ${taskKey} status updated successfully.`);
       } catch (err: any) {
         console.error("Error updating task status:", err);
         alert(`Error updating task: ${err.message}`);

@@ -3,7 +3,6 @@
 
 import React from "react";
 import UserProfile from "./UserProfile"; // Assuming UserProfile is in the same folder or adjust path
-import { Separator } from "@/components/ui/separator"; // Optional separator
 
 export function AdminNavbar() {
   // You could add dynamic titles or breadcrumbs here later if needed

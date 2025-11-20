@@ -148,10 +148,6 @@ export async function POST(request: NextRequest) {
       .set({ role: newRole, updatedAt: new Date().toISOString() })
       .commit({ autoGenerateArrayKeys: false });
 
-    console.log(
-      `Admin ${callerClerkId} set role for user ${targetUserId} to ${newRole}`
-    );
-
     // 6. Return Success
     return NextResponse.json({ message: `User role updated to ${newRole}` });
   } catch (error: any) {

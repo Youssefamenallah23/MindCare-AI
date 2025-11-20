@@ -58,7 +58,7 @@ var generative_ai_1 = require("@google/generative-ai");
 var textsplitters_1 = require("@langchain/textsplitters");
 require("dotenv/config");
 var _a = process.env, ASTRA_DB_NAMESPACE = _a.ASTRA_DB_NAMESPACE, ASTRA_DB_COLLECTION = _a.ASTRA_DB_COLLECTION, ASTRA_DB_ENDPOINT = _a.ASTRA_DB_ENDPOINT, ASTRA_DB_APPLICATION_TOKEN = _a.ASTRA_DB_APPLICATION_TOKEN, GEMINI_API_KEY = _a.GEMINI_API_KEY;
-console.log(GEMINI_API_KEY);
+ GEMINI_API_KEY);
 var genAI = new generative_ai_1.GoogleGenerativeAI("".concat(GEMINI_API_KEY));
 var embeddingModel = genAI.getGenerativeModel({
     model: "text-embedding-004",
@@ -95,7 +95,7 @@ var createCollection = function () {
                     })];
                 case 1:
                     res = _a.sent();
-                    console.log(res);
+                     res);
                     return [2 /*return*/];
             }
         });
@@ -147,7 +147,7 @@ var loadSampleData = function () { return __awaiter(void 0, void 0, void 0, func
             case 11:
                 embeddingResponse = _j.sent();
                 vectorEmbedding = embeddingResponse.embedding.values;
-                console.log("Generated embedding for chunk: ".concat(chunk.substring(0, 50), "..."));
+                 "Generated embedding for chunk: ".concat(chunk.substring(0, 50), "..."));
                 return [4 /*yield*/, collection.insertOne({
                         pageContent: chunk,
                         $vector: vectorEmbedding,
@@ -155,7 +155,7 @@ var loadSampleData = function () { return __awaiter(void 0, void 0, void 0, func
                     })];
             case 12:
                 res = _j.sent();
-                console.log("Chunk stored in DB: ".concat(chunk.substring(0, 50), "..."));
+                 "Chunk stored in DB: ".concat(chunk.substring(0, 50), "..."));
                 return [3 /*break*/, 14];
             case 13:
                 error_1 = _j.sent();
@@ -203,7 +203,7 @@ var loadSampleData = function () { return __awaiter(void 0, void 0, void 0, func
                 return [7 /*endfinally*/];
             case 29: return [7 /*endfinally*/];
             case 30:
-                console.log("Sample data loaded successfully!");
+                 "Sample data loaded successfully!");
                 return [2 /*return*/];
         }
     });

@@ -128,7 +128,6 @@ export function UserSearchSection({
   // Save Handler (calls API) - Passed to Dialog
   const handleSaveChanges = useCallback(
     async (userId: string, updates: EditFormData): Promise<boolean> => {
-      console.log(`Saving updates for user ${userId}`, updates);
       try {
         // Ensure caller is still admin (redundant if page access is checked, but safe)
         if (!isAdminUser) throw new Error("Admin privileges required.");

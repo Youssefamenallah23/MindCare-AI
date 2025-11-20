@@ -60,9 +60,7 @@ export async function POST(request: NextRequest) {
     // --- 4. Return Result ---
     if (existingRoutine) {
       // Routine FOUND for today
-      console.log(
-        `Daily routine found for user ${sanityUserId} on ${todayDateString}`
-      );
+
       return NextResponse.json(
         {
           message: "Routine already exists for today.",
@@ -73,9 +71,7 @@ export async function POST(request: NextRequest) {
       );
     } else {
       // Routine NOT FOUND for today
-      console.log(
-        `No daily routine found for user ${sanityUserId} on ${todayDateString}`
-      );
+
       return NextResponse.json(
         {
           message: "No routine found for today.",

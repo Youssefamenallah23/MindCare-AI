@@ -13,8 +13,6 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useSignIn } from "@clerk/nextjs";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { c } from "framer-motion/dist/types.d-Cjd591yU";
-import { set } from "date-fns";
 
 type FormValues = {
   emailAddress: string;
@@ -52,7 +50,7 @@ const SignInForm = () => {
         // ✅ redirect using Next.js router
         router.push("/dashboard"); // or /mindy
       } else {
-        console.log("Sign-in requires additional steps:", result);
+        setError("Sign-in not complete. Please try again.");
       }
       setLoading(false);
     } catch (err: any) {
@@ -60,7 +58,7 @@ const SignInForm = () => {
         err.errors?.[0]?.message ||
           "Invalid email or password. Please try again."
       );
-      console.error("Sign-in error:", err);
+      setLoading(false);
     }
   };
 

@@ -75,10 +75,6 @@ export async function POST(request: NextRequest) {
       .set(fieldsToUpdate)
       .commit({ autoGenerateArrayKeys: false });
 
-    console.log(
-      `User profile updated successfully for Sanity document ID: ${userDocumentId}`
-    );
-
     // 6. Return Success Response
     return NextResponse.json({ message: "Profile updated successfully" });
   } catch (error: any) {

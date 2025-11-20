@@ -13,7 +13,6 @@ import LoadingBubble from "@/app/_components/LoadingBubble"; // Assuming this ex
 import { useChat } from "@ai-sdk/react";
 // Removed unused Navbar import from this component's perspective
 // import Navbar from "@/components/navbar";
-import Image from "next/image"; // Keep if needed for logo elsewhere, but removed from this layout
 
 // Shadcn UI Imports
 import { Button } from "@/components/ui/button";
@@ -99,7 +98,7 @@ function AdminChatbot() {
 
     setIsUploading(true);
     setFileError(null);
-    console.log("gufiseyhfuies", file);
+
     try {
       const response = await fetch("/api/upload", {
         // Ensure this API exists
