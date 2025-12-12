@@ -46,7 +46,7 @@
     "motion": "^12.7.4",
     "motion-dom": "^12.23.12",
     "nanoid": "^5.1.5",
-    "next": "^15.4.6",
+    "next": "15.4.10",
     "next-sanity": "^9.8.57",
     "pdf-parse": "^1.1.1",
     "puppeteer": "^24.6.0",
